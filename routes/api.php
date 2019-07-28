@@ -18,3 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('notes','NotesController');
+
+//add with URL
+Route::post('/notes/url', 'NotesController@addByURL');

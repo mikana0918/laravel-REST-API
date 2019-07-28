@@ -7,22 +7,6 @@ use App\Notes;
 
 
 
-    if(isset($_GET['note']) && $_GET['note'] != ''){
-        $note = $_GET['note'];
-        $date = $_GET['date'];
-        $_GET['_method'] = 'DELETE';
-        // POST http://localhost:8888/5.7/public/rest/?note=【value】&date=【value】
-        $notes = new notes;
-        $notes->note = rawurldecode($note);
-        $notes->date = rawurldecode($date);
-        $notes->save();
-    } 
-    // else{
-    //     echo '<strong>$_GET[\'time\']はsまだ送信されていません。'."</strong><br/>\n";
-    // }
-
-
-
 class NotesController extends Controller
 {
     /**
@@ -32,9 +16,8 @@ class NotesController extends Controller
      */
     public function index()
     {
-        $items = Notes::all();
-        // dd($items);
-        return $items->toArray();
+         $items = Notes::all();
+         return $items->toArray();
     }
 
     /**
@@ -44,7 +27,10 @@ class NotesController extends Controller
      */
     public function create()
     {
-        
+        // $notes = new notes;
+        // $notes->note = $request->note;
+        // $notes->date = $request->date;
+        // $notes->save();
     }
 
     /**
@@ -55,7 +41,8 @@ class NotesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+            $notes = new notes;
+            $notes->fill($request->all())->save(); 
     }
 
     /**
@@ -79,7 +66,9 @@ class NotesController extends Controller
     public function edit($id)
     {
         $item = Notes::find($id);
+        //一覧は出た
         dd($item);
+       
     }
 
     /**
@@ -91,7 +80,8 @@ class NotesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+          $note = Notes::find($id); 
+          $note->fill($request->all())->save(); 
     }
 
     /**
@@ -102,23 +92,9 @@ class NotesController extends Controller
      */
     public function destroy($id)
     {
-        // $notes = new Notes;
-        
         $item = Notes::find($id);
         $item->delete();
-        return redirect('/');
     }
-
-
-    /**
-     * _GETで入手したデータを保存するメソッド
-     */
-    // public function saveData($note,$date){
-
-        
-
-       
-    // }
 
     /**
      * fillableの定義
